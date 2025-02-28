@@ -1,0 +1,20 @@
+[
+  {
+    "name": "plant",
+    "fertilizer_requirement": [2,3],
+    "water_requirement": [20,30],
+    "growth_speed": 1,
+    "light_requirement": [10,50],
+    "plant_type": "?"
+  },
+  {
+    "name": "berries",
+    "fertilizer_requirement": [0,0],
+    "water_requirement": [20,30],
+    "growth_speed": 2,
+    "light_requirement": [10,30],
+    "plant_type": "bush"
+  }
+
+
+]
