@@ -12,52 +12,67 @@ def get_plant_from_file(file_name)->list[dict]:
         return d
 
 
-
 class Garden():
     def __init__(self):
         self.name = ""
         self.plants = []
+        for i in range(16):
+            self.plants.append(None)
         self.time = 0
 
     def __str__(self):
         return f"{self.name}{self.plants}{self.time}"
 
+    def select_spot(self,message:str):
+        spot = input(f"where do you want to {message}?\n")
+        while not spot.isnumeric() or not int(spot) <= 16 or not int(spot) > 0:
+            print("invalid input")
+            spot = input("input must be a number between 1 and 16\n")
+        return int(spot)
+
+    def spotistaken(self,spot:int):
+            if self.plants[spot] is not None:
+                return True
+            else:
+                return False
+
     def add_plant(self):
         choise = input("what plant do you want to add?\n""1:berries\n""2:rose\n""3:apricot\n")
-        while choise.isnumeric() or not int(choise) in range(1, 4) :
-            print("wrong input")
+        while not choise.isnumeric() or not int(choise) <= 3 or not int(choise) > 0:
+            print("input must be a number")
             choise = input("what plant do you want to add?\n""1:berries\n""2:rose\n""3:apricot\n")
-        plantlist=get_plant_from_file("plants.json")
+        plantlist=get_plant_from_file("plant_base.json")
         pb=plantlist[int(choise)]
-        np = Plant([pb.get("name"),pb.get("fertilizer_requirement"),pb.get("water_requirement"),pb.get("growth_speed"),pb.get("light_requirement"),pb.get("plant_type")])
+        np = Plant(pb)
         print(
             f"you have added {np.name} to your garden\n"
-            f"it will grow {np.growth_speed} days\n"
+            f"it will grow in {np.growth_speed} days\n"
             f"it will need {np.fertilizer_requirement[0]} to {np.fertilizer_requirement[1]} fertilizer\n"
-            f"it will need {np.water_requirement[0]} to {np.water_requirement[1]} water\n"
-            f"it will need {np.light_requirement[0]} to {np.light_requirement[1]} light\n"
+            f"it will need between {np.water_requirement[0]}% and {np.water_requirement[1]}% humidity\n"
+            f"it will need between {np.light_requirement[0]}% and {np.light_requirement[1]}% light\n"
         )
-        spot = input("where do you want to add the plant?\n")
-        while not spot.isnumeric() or not int(spot) <= 16 or not int(spot) > 0:
-            spot = input("must be a number between 1 and 16\n")
+        spot = self.select_spot("add it to the garden")
+        while self.spotistaken(spot):
+            print("spot is taken")
+            spot = self.select_spot("add it to the garden")
         self.plants.insert(int(spot), np)
 
     def remove_plant(self):
-        spot = input("where do you want to add the plant?\n")
-        while not spot.isnumeric() or not int(spot) <= 16 or not int(spot) > 0:
-            spot = input("must be a number between 1 and 16\n")
-        self.plants.pop(int(spot))
+        self.plants.pop(self.select_spot("remove"))
 
-    def water_plant(self, spot):
+    def water_plant(self):
+        spot=self.select_spot("spray water on")
+        while not self.spotistaken(spot):
+            print("spot is empty")
+            spot=self.select_spot("spray water on")
         self.plants[spot].water()
 
     def grow(self):
         self.time += 1
-        [x.grow() for x in self.plants]
+        [x.grow() for x in self.plants if x is not None]
 
     def random_event(self):
         rand = random.randint(0, 100)
-
         if rand < 40:
             print("no event today")
         elif rand < 60:
@@ -73,12 +88,16 @@ class Garden():
         elif rand < 100:
             print("a storm comes in\n""it unrouts the garden")
             self.plants = []
+
     def pass_day(self):
         self.random_event()
         self.grow()
+
     def display(self):
         print(f"day {self.time}")
-        print(f"----------\n {self.plants}")
+        print(f"----------\n")
+        [x.display() for x in self.plants if x is not None]
+
     def play(self):
         print("wellcome to the garden\n")
         inp=input("what do you whant to name your garden?\n")
@@ -98,3 +117,7 @@ class Garden():
                 inp = input("1:add plant\n""2:remove plant\n""3:water plant\n")
             if inp == "1":
                 self.add_plant()
+            elif inp == "2":
+                self.remove_plant()
+            elif inp == "3":
+                self.water_plant()

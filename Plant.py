@@ -1,11 +1,11 @@
 growth_stage = {
-    "sprout": 0,
-    "seedling": 1,
-    "vegetative": 2,
-    "buding": 3,
-    "flowering": 4,
-    "harvest": 5,
-    "dead": 6,
+    0:"sprout",
+    1:"seedling",
+    2:"vegetative",
+    3:"buding",
+    4:"flowering",
+    5:"harvest",
+    6:"dead",
 }
 
 PlantDict = {
@@ -15,7 +15,7 @@ PlantDict = {
     "water_amount": int,
     "water_requirement": tuple[int,int],
     "growth_speed": int,
-    "growth_stage": str,
+    "growth_stage": int,
     "light_amount": int,
     "light_requirement": tuple[int,int],
     "health": int,
@@ -35,18 +35,18 @@ def clamp(n, min_value, max_value):
 
 class Plant:
     def __init__(self, plant_base:Plant_base):
-        self.name = plant_base.get("name")
+        self.name = plant_base.__getitem__("name")
         self.fertilizer_amount = 0
-        self.fertilizer_requirement = plant_base.get("fertilizer_requirement")
+        self.fertilizer_requirement = plant_base.__getitem__("fertilizer_requirement")
         self.water_amount = 10
-        self.water_requirement = plant_base.get("water_requirement")
-        self.growth_speed = plant_base.get("growth_speed")
+        self.water_requirement = plant_base.__getitem__("water_requirement")
+        self.growth_speed = plant_base.__getitem__("growth_speed")
         self.growth_stage = 0
         self.light_amount = 10
-        self.light_requirement = plant_base.get("light_requirement")
+        self.light_requirement = plant_base.__getitem__("light_requirement")
         self.age = 0
         self.health = 100
-        self.plant_type = plant_base.get("plant_type")
+        self.plant_type = plant_base.__getitem__("plant_type")
     def __str__(self):
         return f"{self.name}{self.age}{self.fertilizer_amount}{self.fertilizer_requirement}{self.water_amount}{self.water_requirement}"
 
@@ -95,3 +95,7 @@ class Plant:
     def damage(self, amount):
         self.health -= amount
         self.health_check()
+
+    def display(self):
+        print(growth_stage.__getitem__(self.growth_stage))
+
