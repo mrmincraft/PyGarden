@@ -29,14 +29,21 @@ class Garden():
     def __init__(self, name="", plants=None or dict, time = 0):
         if plants is None:
             plants = []
-            [plants.append(None) for _ in range(15)]
+            [plants.append(None) for _ in range(16)]
         else:
-            pass
-            #[plants.append(None) for _ in range(15)]
-            #self.plants.insert()
+            plantlist = get_plant_from_file("plant_base.json")
+
+            for key in plants:
+                if plants[key] is not None:
+                    plb = plantlist[int(key)]
+                    np = Plant(plb)
+                    self.plants[spot] = np
+
+
+
         plantslist = []
         self.name = name
-        self.plants = [plantslist.append(None) for _ in range(15)]
+        self.plants = [plantslist.append(None) for _ in range(16)]
         self.time = time
 
 
@@ -47,7 +54,7 @@ class Garden():
         savedict={}
         for index, x in enumerate(self.plants):
             if x is not None:
-                 savedict[f"{index}"]= x.__dict__
+                savedict[f"{index}"]= x.__dict__
             else :
                 savedict[f"{index}"]= None
         return {
@@ -68,8 +75,6 @@ class Garden():
                 return True
             else:
                 return False
-    def save(self):
-        pass
 
     def add_plant(self):
         choise = input("what plant do you want to add?\n""1:berries\n""2:rose\n""3:apricot\n")
@@ -90,7 +95,7 @@ class Garden():
         while self.spotistaken(spot):
             print("spot is taken")
             spot = self.select_spot("add it to the garden")
-        self.plants.insert(int(spot), np)
+        self.plants[spot] = np
 
     def remove_plant(self):
         self.plants.pop(self.select_spot("remove"))
@@ -160,10 +165,15 @@ class Garden():
         self.name = "test"
         plantlist = get_plant_from_file("plant_base.json")
         pb = plantlist[0]
-        self.plants.insert(10,Plant(pb))
+        self.plants.pop(10)
+        self.plants.insert(10, Plant(pb))
+        self.plants.pop(5)
         self.plants.insert(5, Plant(pb))
+        self.plants.pop(1)
         self.plants.insert(1, Plant(pb))
+        self.plants.pop(15)
         self.plants.insert(15, Plant(pb))
-        self.plants.insert(0,Plant(pb))
+        self.plants.pop(0)
+        self.plants.insert(0, Plant(pb))
 
 

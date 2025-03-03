@@ -13,6 +13,5 @@ from FilesUtiles import write_to_file, read_from_file
 #     garden = Garden.Garden(read_from_file())
 garden=Garden.Garden()
 garden.test()
-print(garden.plants)
 print(garden.to_dict())
 write_to_file(garden.to_dict())

@@ -34,7 +34,7 @@ def clamp(n, min_value, max_value):
     return max(min_value, min(n, max_value))
 
 class Plant:
-    def __init__(self, plant_base:Plant_base):
+    def __init__(self, plant_base:Plant_base or PlantDict):
         self.name = plant_base.__getitem__("name")
         self.fertilizer_amount = 0
         self.fertilizer_requirement = plant_base.__getitem__("fertilizer_requirement")
