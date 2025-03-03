@@ -18,9 +18,9 @@ def get_plant_from_file(file_name)->list[dict]:
         f.close()
         return d
 
-def write_to_file(obj:dict):
+def write_to_file(dict:dict):
     with open('save.json','w') as f:
-        f.write(json.dumps(obj))
+        f.write(json.dumps(dict))
         f.close()
 
 def read_from_file() -> dict:

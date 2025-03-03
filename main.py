@@ -12,6 +12,7 @@ from FilesUtiles import write_to_file, read_from_file
 # elif inp == "2":
 #     garden = Garden.Garden(read_from_file())
 garden=Garden.Garden()
-garden.test()
-print(garden.to_dict())
-write_to_file(garden.to_dict())
+print(garden.plants)
+#garden.test()
+#print(garden.to_dict())
+#write_to_file(garden.to_dict())

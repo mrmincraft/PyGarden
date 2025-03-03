@@ -22,6 +22,7 @@ PlantDict = {
     "age": int,
     "plant_type": str
 }
+Plant_signature = (str, int, tuple[int,int], int, tuple[int,int], int, int, int, tuple[int,int], int, int, str)
 Plant_base ={
     "name": str,
     "fertilizer_requirement": tuple[int,int],
@@ -34,19 +35,28 @@ def clamp(n, min_value, max_value):
     return max(min_value, min(n, max_value))
 
 class Plant:
-    def __init__(self, plant_base:Plant_base or PlantDict):
+    def __init__(self, plant_base: Plant_base or PlantDict ):
+
         self.name = plant_base.__getitem__("name")
-        self.fertilizer_amount = 0
         self.fertilizer_requirement = plant_base.__getitem__("fertilizer_requirement")
-        self.water_amount = 10
         self.water_requirement = plant_base.__getitem__("water_requirement")
         self.growth_speed = plant_base.__getitem__("growth_speed")
-        self.growth_stage = 0
-        self.light_amount = 10
         self.light_requirement = plant_base.__getitem__("light_requirement")
-        self.age = 0
-        self.health = 100
         self.plant_type = plant_base.__getitem__("plant_type")
+        if plant_base is PlantDict:
+            self.fertilizer_amount = plant_base.__getitem__("fertilizer_amount")
+            self.water_amount = plant_base.__getitem__("water_amount")
+            self.growth_stage = plant_base.__getitem__("growth_stage")
+            self.light_amount = plant_base.__getitem__("light_amount")
+            self.age = plant_base.__getitem__("age")
+            self.health = plant_base.__getitem__("health")
+        else:
+            self.fertilizer_amount = 0
+            self.water_amount = 10
+            self.growth_stage = 0
+            self.light_amount = 10
+            self.age = 0
+            self.health = 100
 
     def __str__(self):
         return f"{self.name}{self.age}{self.fertilizer_amount}{self.fertilizer_requirement}{self.water_amount}{self.water_requirement}"

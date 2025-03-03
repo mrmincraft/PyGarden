@@ -26,24 +26,17 @@ from Plant import Plant, Plant_base
 # }
 
 class Garden():
+    plants = []
     def __init__(self, name="", plants=None or dict, time = 0):
-        if plants is None:
-            plants = []
-            [plants.append(None) for _ in range(16)]
-        else:
-            plantlist = get_plant_from_file("plant_base.json")
-
-            for key in plants:
-                if plants[key] is not None:
-                    plb = plantlist[int(key)]
-                    np = Plant(plb)
-                    self.plants[spot] = np
-
-
-
-        plantslist = []
+        [self.plants.append(None) for _ in range(16)]
+        if plants is dict:
+            for spot in range(16):
+                if plants[spot] is not None:
+                    pb =plants[spot]
+                    self.plants[spot] = Plant(pb)
+                else :
+                    self.plants[spot] = None
         self.name = name
-        self.plants = [plantslist.append(None) for _ in range(16)]
         self.time = time
 
 
@@ -52,11 +45,11 @@ class Garden():
 
     def to_dict(self):
         savedict={}
-        for index, x in enumerate(self.plants):
-            if x is not None:
-                savedict[f"{index}"]= x.__dict__
+        for index, plant in enumerate(self.plants):
+            if plant is not None:
+                savedict[f"{index}"] = plant.__dict__
             else :
-                savedict[f"{index}"]= None
+                savedict[f"{index}"] = None
         return {
             "name":self.name,
             "plants":savedict,
@@ -161,6 +154,7 @@ class Garden():
                 self.remove_plant()
             elif inp == "3":
                 self.water_plant()
+
     def test(self):
         self.name = "test"
         plantlist = get_plant_from_file("plant_base.json")
