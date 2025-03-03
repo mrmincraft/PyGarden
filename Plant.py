@@ -47,6 +47,7 @@ class Plant:
         self.age = 0
         self.health = 100
         self.plant_type = plant_base.__getitem__("plant_type")
+
     def __str__(self):
         return f"{self.name}{self.age}{self.fertilizer_amount}{self.fertilizer_requirement}{self.water_amount}{self.water_requirement}"
 

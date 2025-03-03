@@ -1,40 +1,75 @@
 import random
-import time
+
+
+from FilesUtiles import get_plant_from_file
 
 from Plant import Plant, Plant_base
-import json
 
-
-def get_plant_from_file(file_name)->list[dict]:
-    with open(file_name) as f:
-        d = json.load(f)
-        f.close()
-        return d
-
+# should have been the structure from the start 3/3/2025 11:44
+# default_plant_dict={
+#     "0": None or dict,
+#     "1": None or dict,
+#     "2": None or dict,
+#     "3": None or dict,
+#     "4": None or dict,
+#     "5": None or dict,
+#     "6": None or dict,
+#     "7": None or dict,
+#     "8": None or dict,
+#     "9": None or dict,
+#     "10": None or dict,
+#     "11": None or dict,
+#     "12": None or dict,
+#     "13": None or dict,
+#     "14": None or dict,
+#     "15": None or dict,
+# }
 
 class Garden():
-    def __init__(self):
-        self.name = ""
-        self.plants = []
-        for i in range(16):
-            self.plants.append(None)
-        self.time = 0
+    def __init__(self, name="", plants=None or dict, time = 0):
+        if plants is None:
+            plants = []
+            [plants.append(None) for _ in range(15)]
+        else:
+            pass
+            #[plants.append(None) for _ in range(15)]
+            #self.plants.insert()
+        plantslist = []
+        self.name = name
+        self.plants = [plantslist.append(None) for _ in range(15)]
+        self.time = time
+
 
     def __str__(self):
         return f"{self.name}{self.plants}{self.time}"
+
+    def to_dict(self):
+        savedict={}
+        for index, x in enumerate(self.plants):
+            if x is not None:
+                 savedict[f"{index}"]= x.__dict__
+            else :
+                savedict[f"{index}"]= None
+        return {
+            "name":self.name,
+            "plants":savedict,
+            "time":self.time
+        }
 
     def select_spot(self,message:str):
         spot = input(f"where do you want to {message}?\n")
         while not spot.isnumeric() or not int(spot) <= 16 or not int(spot) > 0:
             print("invalid input")
             spot = input("input must be a number between 1 and 16\n")
-        return int(spot)
+        return int(spot)-1
 
     def spotistaken(self,spot:int):
             if self.plants[spot] is not None:
                 return True
             else:
                 return False
+    def save(self):
+        pass
 
     def add_plant(self):
         choise = input("what plant do you want to add?\n""1:berries\n""2:rose\n""3:apricot\n")
@@ -61,10 +96,10 @@ class Garden():
         self.plants.pop(self.select_spot("remove"))
 
     def water_plant(self):
-        spot=self.select_spot("spray water on")
+        spot=self.select_spot("spray water")
         while not self.spotistaken(spot):
             print("spot is empty")
-            spot=self.select_spot("spray water on")
+            spot=self.select_spot("spray water")
         self.plants[spot].water()
 
     def grow(self):
@@ -121,3 +156,14 @@ class Garden():
                 self.remove_plant()
             elif inp == "3":
                 self.water_plant()
+    def test(self):
+        self.name = "test"
+        plantlist = get_plant_from_file("plant_base.json")
+        pb = plantlist[0]
+        self.plants.insert(10,Plant(pb))
+        self.plants.insert(5, Plant(pb))
+        self.plants.insert(1, Plant(pb))
+        self.plants.insert(15, Plant(pb))
+        self.plants.insert(0,Plant(pb))
+
+
